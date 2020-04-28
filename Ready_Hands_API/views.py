@@ -9,8 +9,31 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from  .models import Worker, Client
 
+
+# {
+# 	"user": {
+# 		"username":"",
+# 		"password":"",
+# 	}
+# 	"worker":{
+
+# 	},
+# 	"client":{
+
+# 	}
+# }
+
+
 @api_view(['POST'])
-def RegisterAPI(request):
+# def RegisterAPI(request):
+# 	new_user = User.objects.create()
+# 	if request.data.get("worker") is not None:
+# 		# He is a worker
+# 		Worker.objects.create(user=new_user)
+# 	else:
+# 		# client
+# 		Client.objects.create(user=new_user)
+		
 	#check if data is recieved
 	if( not request.data):
 		return Response({'data':f'data is undifiend'}, status=status.HTTP_400_BAD_REQUEST)
