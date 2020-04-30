@@ -8,10 +8,12 @@ from rolepermissions.checkers import has_permission
 
 class UserCreateSerializer(serializers.ModelSerializer):
 	tokens = serializers.SerializerMethodField()
+	
 	class Meta:
 		model = User
 		fields = ['username', 'password', 'first_name','last_name', 'tokens']
 		extra_kwargs = {'password': {'write_only': True}}
+	
 	def get_tokens(self, user):
 		tokens = RefreshToken.for_user(user)
 		refresh = str(tokens)
@@ -32,6 +34,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		user.save()
 		return user
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
 	type = serializers.SerializerMethodField()
 	class Meta:
@@ -43,11 +46,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
 		if has_permission(user, 'is_client'):
 			return 'is_client'
 
+
 class WorkerSerializer(serializers.ModelSerializer):
 	user = UserProfileSerializer()
 	class Meta:
 		model = Worker
 		fields = ['user', 'image','phone_no', 'hour_rate','rating']
+
 
 class ClientSerializer(serializers.ModelSerializer):
 	user = UserProfileSerializer()
@@ -55,25 +60,30 @@ class ClientSerializer(serializers.ModelSerializer):
 		model = Client
 		fields = ['user', 'image','phone_no']
 
+
 class WorkerCreateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Worker
 		exclude= ['user']
+
 
 class ClientCreateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Client
 		exclude= ['user']
 
+
 class AddressSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Address
 		exclude= ['user','id']
 
+
 class ServiceSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Service
 		exclude= ['id']
+
 
 class JobSerializer(serializers.ModelSerializer):
 	client = ClientSerializer()

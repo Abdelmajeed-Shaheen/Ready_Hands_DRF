@@ -1,20 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
- #Adders Model
+ 
 class Address(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     street = models.CharField(max_length = 120)
     building_no = models.IntegerField()
     longitude = models.FloatField()
     latitude = models.FloatField()
+    
     class Meta:
         verbose_name_plural = "Addresses"
+    
     def __str__(self):
         return f'{self.user.username}, {self.street}'
 
 
- #Client Model
 class Client(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     image = models.ImageField(blank = True , null = True)
@@ -24,7 +25,6 @@ class Client(models.Model):
         return self.user.username
 
 
- #Worker Model
 class Worker(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     image = models.ImageField(blank = True , null = True)
@@ -37,7 +37,6 @@ class Worker(models.Model):
         return self.user.username
 
 
- #Service Model
 class Service(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
@@ -46,7 +45,6 @@ class Service(models.Model):
         return self.title
 
 
- #Job Model
 class Job(models.Model):
     GENDER = [("M" , "MALE"),("F" , "FEMALE")]
     STATUS = [("P","PENDING"),("S","SELECTED"),("FI","FINISHED")]
@@ -63,8 +61,10 @@ class Job(models.Model):
     # Prefered gender for workers
     gender = models.CharField(choices = GENDER , max_length = 2, null=True)
     status =models.CharField(choices = STATUS , max_length = 3,default = "P")
+    
     class Meta:
         verbose_name_plural = "Jobs"
+    
     def __str__(self):
         return self.title
 
@@ -75,7 +75,6 @@ class Applicant(models.Model):
     acccepted = models.BooleanField(default=False)
 
 
- #Review Model
 class Review(models.Model):
     reviewed_by = models.ForeignKey(Client,on_delete = models.CASCADE)
     reviewed = models.ForeignKey(Worker,on_delete = models.CASCADE)

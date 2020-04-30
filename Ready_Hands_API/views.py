@@ -11,9 +11,9 @@ from rest_framework import status
 from rest_framework.status import HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 from rolepermissions.checkers import has_permission
 
+
 class RegisterAPI(CreateAPIView):
 	serializer_class = UserCreateSerializer
-	print("================================================11111111111")
 
 
 class WorkerCreateAPI(APIView):
@@ -27,6 +27,7 @@ class WorkerCreateAPI(APIView):
 			assign_role(user, 'worker')
 			return Response(serializer.data,status=status.HTTP_201_CREATED)
 		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 class ClientCreateAPI(APIView):
 	def post(self,request):
@@ -71,3 +72,4 @@ class ServiceAPI(APIView):
 		services = Service.objects.all()
 		serializer = ServiceSerializer(services,many=True)
 		return Response(serializer.data)
+
