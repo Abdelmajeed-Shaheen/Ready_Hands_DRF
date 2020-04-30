@@ -25,7 +25,7 @@ SECRET_KEY = 'pusj@ju4y118z8)8ks@ykipu!!ai(juqs+)#n_ifq6q*!hn03='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Ready_Hands_API',
     'rest_framework',
+    'rolepermissions',
 ]
-
+ROLEPERMISSIONS_MODULE = 'Ready_Hands_DRF.roles'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
