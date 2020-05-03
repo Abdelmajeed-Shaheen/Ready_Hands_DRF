@@ -42,6 +42,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 			return 'is_worker'
 		if has_permission(user, 'is_client'):
 			return 'is_client'
+		return 'none'
 
 class WorkerSerializer(serializers.ModelSerializer):
 	user = UserProfileSerializer()

@@ -1,4 +1,4 @@
-from .serializer import UserCreateSerializer,WorkerSerializer,ServiceSerializer,ClientSerializer,WorkerCreateSerializer,ClientCreateSerializer,JobSerializer
+from .serializer import UserCreateSerializer,WorkerSerializer,UserProfileSerializer,ServiceSerializer,ClientSerializer,WorkerCreateSerializer,ClientCreateSerializer,JobSerializer
 from .models import Worker, Client , Job , Service
 from rolepermissions.roles import assign_role
 from django.contrib.auth.models import User
@@ -13,8 +13,6 @@ from rolepermissions.checkers import has_permission
 
 class RegisterAPI(CreateAPIView):
 	serializer_class = UserCreateSerializer
-	print("================================================11111111111")
-
 
 class WorkerCreateAPI(APIView):
 	def post(self,request):
@@ -40,7 +38,6 @@ class ClientCreateAPI(APIView):
 			return Response(serializer.data,status=status.HTTP_201_CREATED)
 		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-
 class UserDetail(APIView):
 	def get(self,request):
 		self.permission_classes = [IsAuthenticated]
@@ -53,7 +50,8 @@ class UserDetail(APIView):
 			client = Client.objects.get(user=request.user)
 			serializer = ClientSerializer(client)
 			return Response(serializer.data)
-
+		serializer = UserProfileSerializer(request.user)
+		return Response({'user':serializer.data})
 
 class JobAPI(APIView):
 	def get(self,request):
@@ -62,7 +60,6 @@ class JobAPI(APIView):
 		jobs = Job.objects.all()
 		serializer = JobSerializer(jobs,many=True)
 		return Response(serializer.data)
-
 
 class ServiceAPI(APIView):
 	def get(self,request):
