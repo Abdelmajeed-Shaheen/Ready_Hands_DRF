@@ -66,10 +66,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):
 		model = Client
 		exclude= ['user']
 
-class AddressSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Address
-		exclude= ['user','id']
 
 class ServiceSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -78,7 +74,6 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
 	client = ClientSerializer()
-	address = AddressSerializer()
 	service = ServiceSerializer()
 	class Meta:
 		model = Job

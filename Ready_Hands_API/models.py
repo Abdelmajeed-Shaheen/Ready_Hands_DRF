@@ -53,7 +53,8 @@ class Job(models.Model):
     title = models.CharField(max_length=120)
     client = models.ForeignKey(Client,on_delete = models.CASCADE)
     service = models.ForeignKey(Service,on_delete = models.CASCADE)
-    address = models.ForeignKey(Address,on_delete= models.CASCADE)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     # min worker rating
     rating_range = models.DecimalField(max_digits=4, decimal_places=2)

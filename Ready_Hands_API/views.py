@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.status import HTTP_201_CREATED,HTTP_400_BAD_REQUEST
 from rolepermissions.checkers import has_permission
+from datetime import datetime
 
 class RegisterAPI(CreateAPIView):
 	serializer_class = UserCreateSerializer
@@ -57,7 +58,7 @@ class JobAPI(APIView):
 	def get(self,request):
 		self.permission_classes = [IsAuthenticated]
 		self.check_permissions(request)
-		jobs = Job.objects.all()
+		jobs = Job.objects.filter(date_to__gte=datetime.today(),status="P")
 		serializer = JobSerializer(jobs,many=True)
 		return Response(serializer.data)
 
