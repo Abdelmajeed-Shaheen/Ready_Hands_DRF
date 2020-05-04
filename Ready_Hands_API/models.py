@@ -1,20 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
- #Adders Model
-class Address(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
-    street = models.CharField(max_length = 120)
-    building_no = models.IntegerField()
-    longitude = models.FloatField()
-    latitude = models.FloatField()
-    class Meta:
-        verbose_name_plural = "Addresses"
-    def __str__(self):
-        return f'{self.user.username}, {self.street}'
 
-
- #Client Model
 class Client(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     image = models.ImageField(blank = True , null = True)
@@ -24,7 +11,6 @@ class Client(models.Model):
         return self.user.username
 
 
- #Worker Model
 class Worker(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     image = models.ImageField(blank = True , null = True)
@@ -37,7 +23,6 @@ class Worker(models.Model):
         return self.user.username
 
 
- #Service Model
 class Service(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
@@ -46,7 +31,6 @@ class Service(models.Model):
         return self.title
 
 
- #Job Model
 class Job(models.Model):
     GENDER = [("M" , "MALE"),("F" , "FEMALE")]
     STATUS = [("P","PENDING"),("S","SELECTED"),("FI","FINISHED")]
@@ -62,7 +46,7 @@ class Job(models.Model):
     date_to = models.DateTimeField()
     no_of_workers = models.IntegerField()
     # Prefered gender for workers
-    gender = models.CharField(choices = GENDER , max_length = 2, null=True)
+    gender = models.CharField(choices = GENDER , max_length = 2, null=True,blank=True)
     status =models.CharField(choices = STATUS , max_length = 3,default = "P")
     class Meta:
         verbose_name_plural = "Jobs"
@@ -74,9 +58,9 @@ class Applicant(models.Model):
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     acccepted = models.BooleanField(default=False)
+    def __str__(self):
+        return f'{self.worker.user.username} , {self.job.title}'
 
-
- #Review Model
 class Review(models.Model):
     reviewed_by = models.ForeignKey(Client,on_delete = models.CASCADE)
     reviewed = models.ForeignKey(Worker,on_delete = models.CASCADE)

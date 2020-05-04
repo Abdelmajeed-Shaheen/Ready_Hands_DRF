@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_jwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Client,Worker,Job , Address ,Service
+from .models import Client,Worker,Job ,Service,Applicant
 from rolepermissions.roles import assign_role
 from rolepermissions.checkers import has_permission
 
@@ -78,3 +78,25 @@ class JobSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Job
 		fields='__all__'
+
+class ApplicantSerializer(serializers.ModelSerializer):
+	worker = WorkerSerializer()
+	class Meta:
+		model= Applicant
+		exclude= ['job']
+
+class JobCreateSerializer(serializers.ModelSerializer):
+	class Meta:
+		model= Job
+		exclude= ['client','status','service']
+
+class ApplicantApplySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Applicant
+		fields = '__all__'
+
+class WorkerAppliedSerializer(serializers.ModelSerializer):
+	job = JobSerializer()
+	class Meta:
+		model= Applicant
+		exclude= ['worker']
