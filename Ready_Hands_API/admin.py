@@ -1,6 +1,4 @@
 from django.contrib import admin
-
-
 from .models import Worker,Client,Job,Service,Review,Applicant
 
 
