@@ -1,10 +1,9 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework_jwt.settings import api_settings
+from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Client,Worker,Job ,Service,Applicant
 from rolepermissions.roles import assign_role
 from rolepermissions.checkers import has_permission
+from .models import Client,Worker,Job ,Service,Applicant
 
 class UserCreateSerializer(serializers.ModelSerializer):
 	tokens = serializers.SerializerMethodField()
@@ -16,18 +15,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		tokens = RefreshToken.for_user(user)
 		refresh = str(tokens)
 		access = str(tokens.access_token)
-		data = {
-			"refresh": refresh,
-			"access": access
-		}
+		data = {"refresh": refresh,"access": access}
 		return data
 
 	def create(self, validated_data):
-		user =User(
-			username=validated_data['username'],
-			first_name=validated_data['first_name'],
-			last_name=validated_data['last_name'],
-		)
+		user =User(**validated_data)
 		user.set_password(validated_data['password'])
 		user.save()
 		return user
@@ -40,9 +32,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 	def get_type(self,user):
 		if has_permission(user, 'is_worker'):
 			return 'is_worker'
-		if has_permission(user, 'is_client'):
+		elif has_permission(user, 'is_client'):
 			return 'is_client'
-		return 'none'
+		return None
 
 class WorkerSerializer(serializers.ModelSerializer):
 	user = UserProfileSerializer()
@@ -65,7 +57,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Client
 		exclude= ['user']
-
 
 class ServiceSerializer(serializers.ModelSerializer):
 	class Meta:

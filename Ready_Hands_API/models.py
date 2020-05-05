@@ -3,18 +3,18 @@ from django.contrib.auth.models import User
 
 
 class Client(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
-    image = models.ImageField(blank = True , null = True)
-    phone_no = models.TextField(verbose_name="phone_no")
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
+    image = models.ImageField(blank=True, null=True)
+    phone_no = models.TextField()
 
     def __str__(self):
         return self.user.username
 
 
 class Worker(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
     image = models.ImageField(blank = True , null = True)
-    phone_no = models.TextField(verbose_name="phone_no")
+    phone_no = models.TextField()
     hour_rate = models.DecimalField(max_digits=4, decimal_places=2)
     # on_save signal from review object this gets updated
     rating = models.DecimalField(max_digits=4, decimal_places=2,default=5.0)

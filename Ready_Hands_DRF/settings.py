@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'pusj@ju4y118z8)8ks@ykipu!!ai(juqs+)#n_ifq6q*!hn03='
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# SECURITY WARNING: don't run with debug turned on in production!64.227.125.47
+DEBUG = Flase
 
 ALLOWED_HOSTS = ['64.227.125.47']
 
