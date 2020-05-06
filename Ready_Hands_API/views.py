@@ -62,7 +62,7 @@ class JobAPI(APIView):
 	def get(self,request):
 		self.permission_classes = [IsAuthenticated]
 		self.check_permissions(request)
-		jobs = Job.objects.filter(date_to__gte=datetime.today(),status="P")
+		jobs = Job.objects.filter(date_to__gte=datetime.today())
 		serializer = JobSerializer(jobs,many=True)
 		return Response(serializer.data,status=status.HTTP_200_OK)
 
@@ -108,9 +108,9 @@ class ApplyToJob(APIView):
 		try:
 			applicant = Applicant(worker=request.user.worker,job_id=job_id)
 			applicant.save()
-			return Response({'applied':'your application has been submited'},status=status.HTTP_201_CREATED)
+			return Response({'msg':'your application has been submited'},status=status.HTTP_201_CREATED)
 		except:
-			return Response({'opps':'your please try again'},status=status.HTTP_400_BAD_REQUEST)
+			return Response({'msg':'please try again'},status=status.HTTP_400_BAD_REQUEST)
 
 class WorkerAppliedJobs(APIView):
 	def get(self,request):
@@ -119,3 +119,15 @@ class WorkerAppliedJobs(APIView):
 		appliedJobs= Applicant.objects.filter(worker=request.user.worker)
 		serializer = WorkerAppliedSerializer(appliedJobs,many=True)
 		return Response(serializer.data,status=status.HTTP_200_OK)
+
+class AcceptWorker(APIView):
+	def post(self,request,applicant_id):
+		self.permission_classes = [IsAuthenticated,IsClient]
+		self.check_permissions(request)
+		try:
+			appliedJob= Applicant.objects.get(id=applicant_id)
+			appliedJob.acccepted = True
+			appliedJob.save()
+			return Response({'msg':'accepted successfully'},status=status.HTTP_200_OK)
+		except:
+			return Response({'msg':'please try again'},status=status.HTTP_400_BAD_REQUEST)

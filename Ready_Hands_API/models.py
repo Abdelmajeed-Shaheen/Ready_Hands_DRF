@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -47,16 +48,25 @@ class Job(models.Model):
     no_of_workers = models.IntegerField()
     # Prefered gender for workers
     gender = models.CharField(choices = GENDER , max_length = 2, null=True,blank=True)
-    status =models.CharField(choices = STATUS , max_length = 3,default = "P")
+    #status =models.CharField(choices = STATUS , max_length = 3,default = "P")
+    def status(self):
+        if timezone.now() >= self.date_to:
+            return "FI"
+        elif self.applicants.filter(acccepted=True).exists():
+             return "S"
+        else:
+             return "P"
+
     class Meta:
         verbose_name_plural = "Jobs"
     def __str__(self):
         return self.title
 
 
+
 class Applicant(models.Model):
-    worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE, related_name='applicants')
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applicants')
     acccepted = models.BooleanField(default=False)
     def __str__(self):
         return f'{self.worker.user.username} , {self.job.title}'

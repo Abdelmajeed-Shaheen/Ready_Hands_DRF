@@ -66,9 +66,12 @@ class ServiceSerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
 	client = ClientSerializer()
 	service = ServiceSerializer()
+	status = serializers.SerializerMethodField()
 	class Meta:
 		model = Job
 		fields='__all__'
+	def get_status(self,job):
+		return job.status()
 
 class ApplicantSerializer(serializers.ModelSerializer):
 	worker = WorkerSerializer()
@@ -79,7 +82,7 @@ class ApplicantSerializer(serializers.ModelSerializer):
 class JobCreateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model= Job
-		exclude= ['client','status','service']
+		exclude= ['client','service']
 
 class ApplicantApplySerializer(serializers.ModelSerializer):
 	class Meta:

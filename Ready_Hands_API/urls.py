@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (RegisterAPI,
 UserDetail,WorkerCreateAPI,ClientCreateAPI,
 JobAPI,ServiceAPI,ClientJobAPI,JobApplicants,
-CreateJobAPI,ApplyToJob,WorkerAppliedJobs)
+CreateJobAPI,ApplyToJob,WorkerAppliedJobs,
+AcceptWorker)
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
@@ -16,7 +17,8 @@ urlpatterns = [
     path('jobs/', JobAPI.as_view(), name='api-jobs'),
     path('jobs/<int:job_id>/applicants/', JobApplicants.as_view(), name='api-client-job-applicants'),
     path('jobs/create/', CreateJobAPI.as_view(), name='api-client-create-job'),
-    path('jobs/<int:job_id>/apply/', ApplyToJob.as_view(), name='api-worker-job-apply'),
+    path('jobs/<int:job_id>/apply/', ApplyToJob.as_view(), name='api-worker-job-accept'),
+    path('applicant/<int:applicant_id>/accept/', AcceptWorker.as_view(), name='api-applicant-accept'),
     path('worker/applied/jobs/', WorkerAppliedJobs.as_view(), name='api-worker-applied-jobs'),
     path('client/jobs/', ClientJobAPI.as_view(), name='api-client-jobs'),
     #services
