@@ -25,7 +25,7 @@ SECRET_KEY = 'pusj@ju4y118z8)8ks@ykipu!!ai(juqs+)#n_ifq6q*!hn03='
 # SECURITY WARNING: don't run with debug turned on in production!64.227.125.47
 DEBUG = False
 
-ALLOWED_HOSTS = ['64.227.125.47']
+ALLOWED_HOSTS = ['64.227.125.47','api.readyhands.site']
 
 
 # Application definition
